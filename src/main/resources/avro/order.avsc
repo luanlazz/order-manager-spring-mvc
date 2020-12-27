@@ -1,0 +1,32 @@
+[
+{"namespace": "com.mvc.ordermanager.resource.avro",
+ "type": "enum",
+ "name": "OrderState",
+ "symbols" : ["CREATED", "VALIDATED", "FAILED", "SHIPPED"]
+},
+{"namespace": "com.mvc.ordermanager.resource.avro",
+ "type": "enum",
+ "name": "Product",
+ "symbols" : ["JUMPERS", "UNDERPANTS", "STOCKINGS"]
+},
+{"namespace": "com.mvc.ordermanager.resource.avro",
+ "type": "record",
+ "name": "Order",
+ "fields": [
+     {"name": "id", "type": "string"},
+     {"name": "customerId", "type": "long"},
+     {"name": "state", "type": "OrderState"},
+     {"name": "product",  "type": "Product"},
+     {"name": "quantity", "type": "int"},
+     {"name": "price", "type": "double"}
+ ]
+},
+{"namespace": "com.mvc.ordermanager.resource.avro",
+   "type": "record",
+   "name": "OrderValue",
+    "fields": [
+     {"name": "order", "type": "Order"},
+     {"name": "value", "type": "double"}
+    ]
+}
+]
