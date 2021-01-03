@@ -18,11 +18,14 @@ import static com.mvc.ordermanager.model.OrderBean.fromBean;
 public class OrderService {
 
     private static final String CALL_TIMEOUT = "100";
-    private IOrderDAO orderDAO;
+
+    private final IOrderDAO orderDAO;
+    private final OrderDetailsService orderDetailsService;
 
     @Autowired
-    public void setOrderDAO(IOrderDAO orderDAO) {
+    public OrderService(IOrderDAO orderDAO, OrderDetailsService orderDetailsService) {
         this.orderDAO = orderDAO;
+        this.orderDetailsService = orderDetailsService;
     }
 
     @GetMapping("/{id}")
@@ -58,6 +61,7 @@ public class OrderService {
                                          @RequestParam(defaultValue = CALL_TIMEOUT) final Long timeout) {
         try {
             final Order bean = fromBean(order);
+            this.orderDetailsService.validate(bean);
             this.orderDAO.saveOrder(bean, timeout.intValue());
             return ResponseEntity.created(URI.create("/api/orders")).build();
         } catch (Exception e) {
