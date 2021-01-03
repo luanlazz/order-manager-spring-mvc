@@ -4,6 +4,7 @@ import com.mvc.ordermanager.dao.IOrderDAO;
 import com.mvc.ordermanager.model.OrderBean;
 import com.mvc.ordermanager.resource.avro.Order;
 import com.mvc.ordermanager.resource.avro.OrderState;
+import com.mvc.ordermanager.service.OrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

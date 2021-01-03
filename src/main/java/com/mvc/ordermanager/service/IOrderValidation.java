@@ -1,4 +1,4 @@
-package com.mvc.ordermanager.controller;
+package com.mvc.ordermanager.service;
 
 import com.mvc.ordermanager.resource.avro.Order;
 
