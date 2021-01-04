@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -48,6 +49,19 @@ public class OrderDAO implements IOrderDAO {
                     order.getQuantity(),
                     order.getPrice());
 
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+    }
+
+    @Override
+    public Double getTotalByCustomer(final Long customer_id, final Timestamp period) throws Exception {
+        try {
+            JdbcTemplate select = new JdbcTemplate(dataSource);
+
+            return select.queryForObject("SELECT COALESCE(SUM(quantity * price), 0) FROM \"order\" WHERE customerid = ? AND created_at >= ?",
+                    new Object[] {customer_id, period},
+                    Double.class);
         } catch (Exception e) {
             throw new Exception(e);
         }

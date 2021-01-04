@@ -4,6 +4,7 @@ import com.mvc.ordermanager.dao.IOrderDAO;
 import com.mvc.ordermanager.model.OrderBean;
 import com.mvc.ordermanager.resource.avro.Order;
 import com.mvc.ordermanager.resource.avro.OrderState;
+import com.mvc.ordermanager.service.FraudService;
 import com.mvc.ordermanager.service.OrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,11 +23,13 @@ public class OrderService {
 
     private final IOrderDAO orderDAO;
     private final OrderDetailsService orderDetailsService;
+    private final FraudService fraudService;
 
     @Autowired
-    public OrderService(IOrderDAO orderDAO, OrderDetailsService orderDetailsService) {
+    public OrderService(IOrderDAO orderDAO, OrderDetailsService orderDetailsService, FraudService fraudService) {
         this.orderDAO = orderDAO;
         this.orderDetailsService = orderDetailsService;
+        this.fraudService = fraudService;
     }
 
     @GetMapping("/{id}")
@@ -62,8 +65,15 @@ public class OrderService {
                                          @RequestParam(defaultValue = CALL_TIMEOUT) final Long timeout) {
         try {
             final Order bean = fromBean(order);
+
             this.orderDetailsService.validate(bean);
+
+            if (bean.getState() != OrderState.FAILED) {
+                this.fraudService.validate(bean);
+            }
+
             this.orderDAO.saveOrder(bean, timeout.intValue());
+
             return ResponseEntity.created(URI.create("/api/orders")).build();
         } catch (Exception e) {
             e.printStackTrace();

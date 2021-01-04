@@ -28,7 +28,8 @@ create table "order"
     state      OrderState          not null,
     product    Product             not null,
     quantity   integer             not null,
-    price      numeric(10, 2)      not null
+    price      numeric(10, 2)      not null,
+    created_at timestamptz         not null default now()
 );
 alter table "order"
     add constraint cat_customer_pk
