@@ -48,8 +48,7 @@ public class OrderDAO implements IOrderDAO {
                     order.getProduct().name(),
                     order.getQuantity(),
                     order.getPrice());
-
-        } catch (Exception e) {
+        }  catch (Exception e) {
             throw new Exception(e);
         }
     }
@@ -58,7 +57,6 @@ public class OrderDAO implements IOrderDAO {
     public Double getTotalByCustomer(final Long customer_id, final Timestamp period) throws Exception {
         try {
             JdbcTemplate select = new JdbcTemplate(dataSource);
-
             return select.queryForObject("SELECT COALESCE(SUM(quantity * price), 0) FROM \"order\" WHERE customerid = ? AND created_at >= ?",
                     new Object[] {customer_id, period},
                     Double.class);

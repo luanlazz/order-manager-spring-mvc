@@ -18,6 +18,10 @@ create table customer
     level     varchar(50)         not null default 'bronze'
 );
 
+INSERT INTO customer VALUES (1, 'Joao', 'Silva', 'joao@hotmail.com', 'Rua X');
+INSERT INTO customer VALUES (2, 'Pedro', 'Ala', 'pedro@hotmail.com', 'Rua Y');
+INSERT INTO customer VALUES (3, 'Lucas', 'Napoles', 'lucas@hotmail.com', 'Rua Z');
+
 CREATE TYPE OrderState AS ENUM ('CREATED', 'VALIDATED', 'FAILED', 'SHIPPED');
 CREATE TYPE Product AS ENUM ('JUMPERS', 'UNDERPANTS', 'STOCKINGS');
 
@@ -35,37 +39,8 @@ alter table "order"
     add constraint cat_customer_pk
         foreign key (customerId) references customer (id);
 
-create table orderValue
-(
-    orderId    integer            not null,
-    value      numeric(10, 2)      not null
-);
-alter table orderValue
-    add constraint cat_orderValue_pk
-        foreign key (orderId) references "order" (id);
-
-create table orderEnriched
-(
-    id              integer primary key not null,
-    customerId      integer             not null,
-    customerLevel   varchar(50)         not null
-);
-alter table orderEnriched
-    add constraint cat_orderEnriched_pk
-        foreign key (customerId) references customer (id);
-
 CREATE TYPE OrderValidationType AS ENUM ('INVENTORY_CHECK', 'FRAUD_CHECK', 'ORDER_DETAILS_CHECK');
 CREATE TYPE OrderValidationResult AS ENUM ('PASS', 'FAIL', 'ERROR');
-
-create table OrderValidation
-(
-    orderId             integer                 not null,
-    checkType           OrderValidationType     not null,
-    validationResult    OrderValidationResult   not null
-);
-alter table OrderValidation
-    add constraint cat_OrderValidation_pk
-        foreign key (orderId) references "order" (id);
 
 create table payment
 (
@@ -78,7 +53,17 @@ alter table payment
     add constraint cat_order_pk
         foreign key (orderId) references "order" (id);
 
+create table inventory
+(
+    product         Product     primary key not null,
+    qtyTotal        integer     not null,
+    qtyReserved     integer     not null
+);
+
+INSERT INTO inventory VALUES ('JUMPERS', 20, 0);
+INSERT INTO inventory VALUES ('UNDERPANTS', 10, 0);
+INSERT INTO inventory VALUES ('STOCKINGS', 5, 0);
+
 create sequence customer_seq increment 1 start 1;
 create sequence order_seq increment 1 start 1;
-create sequence orderEnriched_seq increment 1 start 1;
 create sequence payment_seq increment 1 start 1;
