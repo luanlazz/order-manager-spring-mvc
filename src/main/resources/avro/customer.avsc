@@ -1,0 +1,14 @@
+[
+{"namespace": "com.mvc.ordermanager.resource.avro",
+ "type": "record",
+ "name": "Customer",
+ "fields": [
+     {"name": "id", "type": "long"},
+     {"name": "firstName", "type": "string"},
+     {"name": "lastName", "type": "string"},
+     {"name": "email", "type": "string"},
+     {"name": "address", "type": "string"},
+     {"name": "level", "type": "string", "default": "bronze"}
+ ]
+}
+]

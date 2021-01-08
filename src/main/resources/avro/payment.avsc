@@ -1,0 +1,12 @@
+[
+{"namespace": "com.mvc.ordermanager.resource.avro",
+ "type": "record",
+ "name": "Payment",
+ "fields": [
+     {"name": "id", "type": "string"},
+     {"name": "orderId", "type": "string"},
+     {"name": "ccy", "type": "string"},
+     {"name": "amount", "type": "double"}
+ ]
+}
+]
